@@ -57,7 +57,7 @@ type Client struct {
 	session       *grequests.Session
 }
 
-func NewClient(username string, password string) (*Client, error) {
+func NewClient(username string, password string) *Client {
 	//superProxy, err := SuperProxy()
 	//if err != nil {
 	//	return nil, err

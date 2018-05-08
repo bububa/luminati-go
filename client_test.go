@@ -6,11 +6,7 @@ import (
 )
 
 func TestLuminatiClient_ShoulReturnContent_When200(t *testing.T) {
-	c, err := NewClient("lum-customer-xxx-zone-residential", "xxx")
-
-	if err != nil {
-		t.Fatal(err)
-	}
+	c := NewClient("lum-customer-xxx-zone-residential", "xxx")
 
 	c.SetFailuresLimit(3)
 
