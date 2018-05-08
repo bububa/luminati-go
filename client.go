@@ -4,7 +4,6 @@ import (
 	"encoding/base64"
 	"fmt"
 	"github.com/levigross/grequests"
-	"log"
 	"math/rand"
 	"net/url"
 	"strconv"
@@ -71,7 +70,7 @@ func NewClient(username string, password string) *Client {
 		failuresLimit: DEFAULT_FAILURES_LIMIT,
 	}
 	client.NewSession()
-	return client, nil
+	return client
 }
 
 func (c *Client) SetFailuresLimit(limit uint) {
@@ -86,16 +85,12 @@ func (c *Client) Get(target string, ro *grequests.RequestOptions) (resp *greques
 		c.requests += 1
 		resp, err = c.session.Get(target, ro)
 		if err != nil {
-			log.Println(err)
 			c.failures += 1
 			c.NewSession()
 		} else if !resp.Ok {
 			c.failures += 1
 			c.NewSession()
 		} else {
-			for k, v := range resp.Header {
-				fmt.Printf("%s:%s\n", k, v)
-			}
 			return resp, nil
 		}
 		if c.failures >= c.failuresLimit && c.failuresLimit > 0 {
