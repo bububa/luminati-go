@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/levigross/grequests"
 	"math/rand"
+	"net"
 	"net/url"
 	"strconv"
 	"time"
@@ -57,14 +58,14 @@ type Client struct {
 }
 
 func NewClient(username string, password string) *Client {
-	//superProxy, err := SuperProxy()
-	//if err != nil {
-	//	return nil, err
-	//}
+	superProxy, err := SuperProxy()
+	if err != nil {
+		return nil
+	}
 	client := &Client{
 		username:      username,
 		password:      password,
-		superProxy:    SUPER_PROXY,
+		superProxy:    superProxy,
 		port:          DEFAULT_PORT,
 		requestsLimit: DEFAULT_REQUESTS_LIMIT,
 		failuresLimit: DEFAULT_FAILURES_LIMIT,
@@ -131,4 +132,12 @@ func (c *Client) NewSession() {
 func (c *Client) Reset() {
 	c.NewSession()
 	c.failures = 0
+}
+
+func SuperProxy() (string, error) {
+	addrs, err := net.LookupHost(SUPER_PROXY)
+	if err != nil {
+		return "", err
+	}
+	return addrs[0], nil
 }

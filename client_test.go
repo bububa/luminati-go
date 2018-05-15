@@ -10,11 +10,23 @@ func TestLuminatiClient_ShoulReturnContent_When200(t *testing.T) {
 
 	c.SetFailuresLimit(3)
 
-	response, err := c.Get("https://search.rakuten.co.jp/search/mall/%E3%83%8F%E3%83%BC%E3%83%90%E3%83%AA%E3%82%A6%E3%83%A0+%E3%82%AD%E3%83%83%E3%83%88/", nil)
+	link := "https://baidu.com"
+	link = "http://lumtest.com/myip.json"
+	response, err := c.Get(link, nil)
 
 	if err != nil {
 		t.Fatal(err)
 	}
 	fmt.Println(response.String())
+
+	response, err = c.Get(link, nil)
+
+	if err != nil {
+		t.Fatal(err)
+	}
+	fmt.Println(response.String())
+	for k, v := range response.RawResponse.Request.Header {
+		fmt.Printf("%s: %v\n", k, v)
+	}
 
 }
